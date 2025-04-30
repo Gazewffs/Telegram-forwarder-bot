@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.railway.app/railway.schema.json",
+  "name": "Telegram Channel Forwarder Bot",
+  "description": "A customizable Telegram bot that forwards messages from a source channel to a destination channel with text filtering and image processing capabilities.",
+  "env": [
+    {
+      "name": "TELEGRAM_BOT_TOKEN",
+      "description": "Your Telegram bot token obtained from BotFather"
+    },
+    {
+      "name": "SOURCE_CHANNEL_ID",
+      "description": "ID of the channel to forward messages from (e.g., -1001234567890)"
+    },
+    {
+      "name": "DESTINATION_CHANNEL_ID",
+      "description": "ID of the channel to forward messages to (e.g., -1001098765432)"
+    }
+  ],
+  "services": [
+    {
+      "name": "telegram-forwarder",
+      "cmd": "python bot_standalone.py"
+    }
+  ]
+}
