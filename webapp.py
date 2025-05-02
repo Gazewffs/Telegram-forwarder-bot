@@ -52,7 +52,7 @@ def start_bot():
     
     try:
         # Create and start the forwarder bot
-        logger.info(f"Starting Telegram Forwarder Bot...")
+        logger.info("Starting Telegram Forwarder Bot...")
         logger.info(f"Source channel: {source_id}")
         logger.info(f"Destination channel: {dest_id}")
         
@@ -112,4 +112,20 @@ def start_bot_route():
         bot_thread.start()
         logger.info("Bot thread started")
         return jsonify({"status": "started"})
-    return jsonify({"status
+    return jsonify({"status": "already_running"})
+
+# Initialize the bot at startup
+# Starting the bot when the module is imported - works with both gunicorn and Flask
+try:
+    # Start bot in a separate thread when the app is imported
+    bot_thread = threading.Thread(target=start_bot)
+    bot_thread.daemon = True
+    bot_thread.start()
+    logger.info("Bot thread started at initialization")
+except Exception as e:
+    logger.error(f"Failed to start bot at initialization: {e}")
+
+# For direct execution during development
+if __name__ == '__main__':
+    start_bot()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
