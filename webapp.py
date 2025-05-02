@@ -7,6 +7,7 @@ import os
 import threading
 import logging
 import traceback
+import asyncio
 from flask import Flask, jsonify
 from bot import TelegramForwarder
 
@@ -25,8 +26,12 @@ bot = None
 bot_thread = None
 
 def start_bot():
-    """Start the bot in a separate thread."""
+    """Start the bot in a separate thread with its own event loop."""
     global bot
+    
+    # Create new event loop for this thread
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     
     # Check for all required environment variables
     token = os.getenv("TELEGRAM_BOT_TOKEN")
